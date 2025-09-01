@@ -7,7 +7,7 @@ import Member from "./models/Member.js";
 import morgan from "morgan";
 
 const app = express();
-const PORT = process.env.PORT || 4000;
+const PORT = process.env.PORT || 8080;
 
 // __dirname replacement (ESM)
 const __filename = fileURLToPath(import.meta.url);
