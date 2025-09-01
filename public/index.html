@@ -1,0 +1,350 @@
+<ul class="members-list"></ul>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Student Groups</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;600&display=swap');
+
+  /* Reset & Base */
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body {
+    font-family: 'Inter', sans-serif;
+    background: #f9fafb;
+    color: #111827;
+    line-height: 1.5;
+    padding: 2rem;
+  }
+  h1,h2,h3 { margin-bottom: 1rem; font-weight: 600; }
+  h1 { font-size: 2rem; text-align: center; }
+  h2 { font-size: 1.25rem; }
+  h3 { font-size: 1rem; }
+
+  /* Container */
+  .container { max-width: 800px; margin: auto; }
+
+  /* Card */
+  .card {
+    background: #fff;
+    border-radius: 1rem;
+    padding: 1.5rem;
+    margin-bottom: 1.5rem;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.05);
+    transition: transform 0.2s, box-shadow 0.2s;
+  }
+  .card:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 8px 20px rgba(0,0,0,0.08);
+  }
+
+  /* Form Elements */
+  label { font-weight: 600; display: block; margin-top: 1rem; }
+  input, select, textarea, button {
+    width: 100%;
+    padding: 0.75rem 1rem;
+    margin-top: 0.25rem;
+    border-radius: 0.75rem;
+    border: 1px solid #e5e7eb;
+    font-size: 0.95rem;
+    transition: all 0.2s;
+  }
+  input:focus, select:focus, textarea:focus {
+    outline: none;
+    border-color: #3b82f6;
+    box-shadow: 0 0 0 3px rgba(59,130,246,0.2);
+  }
+
+  button {
+    background: #3b82f6;
+    color: #fff;
+    font-weight: 600;
+    cursor: pointer;
+    margin-top: 1rem;
+    transition: all 0.2s;
+  }
+  button:hover { background: #2563eb; }
+
+  /* Custom fields */
+  #customFields { overflow: hidden; max-height: 0; transition: max-height 0.4s ease; }
+  #customFields.show { max-height: 300px; }
+
+  /* Groups */
+  .group-card {
+    background: #f3f4f6;
+    padding: 1rem;
+    border-radius: 0.75rem;
+    margin-bottom: 1rem;
+    transition: transform 0.2s;
+  }
+  .group-card:hover { transform: translateY(-1px); }
+  .members-list { margin-top: 0.5rem; padding-left: 1rem; }
+  .members-list li { margin-bottom: 0.25rem; }
+
+  /* Toast */
+  #toast {
+    visibility: hidden;
+    min-width: 250px;
+    background-color: #111827;
+    color: #fff;
+    text-align: center;
+    border-radius: 0.75rem;
+    padding: 0.75rem 1.25rem;
+    position: fixed;
+    z-index: 999;
+    left: 50%;
+    bottom: 2rem;
+    transform: translateX(-50%);
+    font-size: 0.875rem;
+  }
+  #toast.show {
+    visibility: visible;
+    animation: fadein 0.3s, fadeout 0.3s 2.5s;
+  }
+  @keyframes fadein { from {opacity: 0; bottom: 0;} to {opacity:1; bottom:2rem;} }
+  @keyframes fadeout { from {opacity:1; bottom:2rem;} to {opacity:0; bottom:0;} }
+
+  /* Select arrow */
+  select { appearance: none; background: url('data:image/svg+xml;utf8,<svg fill="%236b7280" height="24" viewBox="0 0 24 24" width="24" xmlns="http://www.w3.org/2000/svg"><path d="M7 10l5 5 5-5z"/></svg>') no-repeat right 1rem center/1rem auto; }
+
+</style>
+</head>
+<body>
+
+<div class="container">
+  <h1>📚 NST Group Projects Logger</h1>
+
+  <!-- Group Form -->
+  <form id="groupForm" class="card">
+    <label>Group Name</label>
+    <input type="text" id="groupName" placeholder="Enter Group Name" required />
+
+<label>Select Project</label>
+<select id="project" required>
+  <option value="">-- Select Project --</option>
+  <option value="Custom Project">Custom Project</option>
+  <option value="Campus Event Booker">Campus Event Booker: events, venues, bookings with seat caps, waitlist, organizer/admin roles, CSV export</option>
+  <option value="Department Issue Tracker">Department Issue Tracker: tickets, statuses, comments, assignees, RBAC, activity log, filters</option>
+  <option value="Library Lite">Library Lite: books, authors, copies, loans/returns, due dates, penalties, search, reports</option>
+  <option value="Hostel/Room Allotment">Hostel/Room Allotment: room inventory, allocations, swap requests, complaints, warden dashboard</option>
+  <option value="Clubs and Societies Hub">Clubs and Societies Hub: club pages, membership requests, announcements, events, attendance</option>
+  <option value="Placement Mini-Portal">Placement Mini-Portal: job posts, applications, shortlisting pipeline, resume links, CSV import/export</option>
+  <option value="Course Registration System">Course Registration System: courses, sections, seat limits, add/drop waitlist, timetable clash checks</option>
+  <option value="Simple E‑Commerce">Simple E‑Commerce: products, categories, cart, orders, payments stub, admin catalog management</option>
+  <option value="Food Ordering for Canteen">Food Ordering for Canteen: menu, orders, kitchen dashboard, pickup slots, ratings, daily reports</option>
+  <option value="Online Quiz/MCQ Engine">Online Quiz/MCQ Engine: question bank, tags, timed tests, auto scoring, result export</option>
+  <option value="Attendance and Leave Portal">Attendance and Leave Portal: sessions, attendance logs, leave requests, approvals, summaries</option>
+  <option value="Inventory and Asset Tracker">Inventory and Asset Tracker: items, stock levels, check‑in/out, suppliers, reorder alerts</option>
+  <option value="Appointment Booking System">Appointment Booking System: services, providers, slots, bookings, cancellations, reminders (mock)</option>
+  <option value="Alumni Connect">Alumni Connect: profiles, posts, jobs, mentorship requests, events, role‑based moderation</option>
+  <option value="Blogging/Knowledge Base">Blogging/Knowledge Base: posts, tags, comments, drafts/publish workflow, search, editor roles</option>
+  <option value="Helpdesk/FAQ with Feedback">Helpdesk/FAQ with Feedback: articles, feedback, ticket escalation to human support, analytics</option>
+  <option value="Project Management Lite">Project Management Lite: projects, tasks, labels, comments, deadlines, Kanban views</option>
+  <option value="Fitness/Class Scheduler">Fitness/Class Scheduler: classes, trainers, bookings, membership plans, attendance logs</option>
+  <option value="Real‑Estate Listings">Real‑Estate Listings: listings, inquiries, saved searches, admin verification, CSV import</option>
+  <option value="Job Board + Applications">Job Board + Applications: postings, applications, status, interview slots, notes, exports</option>
+  <option value="Ride/Car‑Pooling on Campus">Ride/Car‑Pooling on Campus: routes, seats, bookings, verification, ratings, trip history</option>
+  <option value="Micro‑Learning Platform">Micro‑Learning Platform: lessons, quizzes, progress, certificates, admin content tools</option>
+  <option value="Expense Splitter">Expense Splitter: groups, expenses, settlements, activity feed, CSV export, simple ledger</option>
+  <option value="URL Shortener + Analytics">URL Shortener + Analytics: short links, redirects, per‑day clicks, referrer stats, expiry</option>
+  <option value="Clinic/Hospital OPD Lite">Clinic/Hospital OPD Lite: doctors, slots, registrations, prescriptions, lab requests, billing stub</option>
+  
+</select>
+
+
+    <div id="customFields">
+      <label>Custom Title</label>
+      <input type="text" id="customTitle" placeholder="Custom Project Title" />
+
+      <label>Custom Features</label>
+      <textarea id="customFeatures" placeholder="List project features"></textarea>
+
+      <label>Custom Vision</label>
+      <textarea id="customVision" placeholder="Enter project vision"></textarea>
+    </div>
+
+    <button type="submit">💾 Save Group</button>
+  </form>
+
+  <!-- Add Members -->
+  <form id="memberForm" class="card" style="display:none;">
+    <h2>Add Member</h2>
+    <label>Group</label>
+    <select id="groupSelect" required>
+      <option value="">-- Select Group --</option>
+    </select>
+
+    <input type="text" id="studentName" placeholder="Student Name" required />
+    <input type="email" id="email" placeholder="Email" required />
+    <input type="text" id="studentID" placeholder="Student ID" />
+    <input type="text" id="mobile" placeholder="Mobile" />
+
+    <button type="submit">➕ Add Member</button>
+  </form>
+
+  <!-- Groups List -->
+  <div class="card">
+    <h2>Groups</h2>
+    <div id="groupsList"></div>
+  </div>
+</div>
+
+<!-- Toast -->
+<div id="toast"></div>
+
+<script>
+const groupForm = document.getElementById("groupForm");
+const projectSelect = document.getElementById("project");
+const customFields = document.getElementById("customFields");
+const memberForm = document.getElementById("memberForm");
+const groupSelect = document.getElementById("groupSelect");
+const groupsList = document.getElementById("groupsList");
+const toast = document.getElementById("toast");
+
+function showToast(message, success=true) {
+  toast.textContent = message;
+  toast.style.backgroundColor = success ? '#3b82f6' : '#ef4444';
+  toast.className = "show";
+  setTimeout(() => toast.className = toast.className.replace("show",""), 3000);
+}
+
+projectSelect.addEventListener("change", () => {
+  if(projectSelect.value === "Custom Project") customFields.classList.add("show");
+  else customFields.classList.remove("show");
+});
+
+async function fetchGroups() {
+  try {
+    const res = await fetch("/api/groups");
+    const groups = await res.json();
+    groupsList.innerHTML = "";
+    groupSelect.innerHTML = `<option value="">-- Select Group --</option>`;
+
+    groups.forEach(g => {
+      const card = document.createElement("div");
+      card.className = "group-card";
+      card.innerHTML = `
+        <h3>${g.groupName} (${g.selectedProject})</h3>
+        ${g.selectedProject === "Custom Project" ? `
+          <p><b>Title:</b> ${g.customTitle}</p>
+          <p><b>Features:</b> ${g.customFeatures}</p>
+          <p><b>Vision:</b> ${g.customVision}</p>
+        ` : ""}
+        <h4>Members:</h4>
+        <ul class="members-list">
+          ${g.members.map(m => `
+            <li style="display: flex; align-items: center; gap: 0.5rem;">
+              <span>${m.studentName} - ${m.email}</span>
+              <button class="delete-member" 
+                      data-group="${g._id}" 
+                      data-email="${m.email}" 
+                      style="
+                        padding: 0.2rem; 
+                        font-size: 0.8rem; 
+                        color: #fff; 
+                        background: #ef4444; 
+                        border: none; 
+                        border-radius: 0.25rem; 
+                        cursor: pointer;
+                        width: 1.5rem;
+                        height: 1.5rem;
+                        display: flex;
+                        align-items: center;
+                        justify-content: center;
+                      "
+                      title="Delete member">🗑️</button>
+            </li>
+          `).join("")}
+        </ul>
+      `;
+      groupsList.appendChild(card);
+
+      const opt = document.createElement("option");
+      opt.value = g._id;
+      opt.textContent = g.groupName;
+      groupSelect.appendChild(opt);
+    });
+
+    // ← Attach delete listeners AFTER DOM is updated
+    document.querySelectorAll(".delete-member").forEach(btn => {
+      btn.addEventListener("click", async () => {
+        const groupId = btn.dataset.group;
+        const email = btn.dataset.email;
+
+        if (!confirm(`Are you sure you want to delete ${email}?`)) return;
+
+        try {
+          const res = await fetch(`/api/groups/${groupId}/members/${email}`, { method: "DELETE" });
+          const data = await res.json();
+          if (res.ok) showToast("Member deleted successfully!");
+          else showToast(data.error, false);
+          fetchGroups(); // Refresh
+        } catch (err) {
+          console.error(err);
+          showToast("Request failed", false);
+        }
+      });
+    });
+
+    memberForm.style.display = groups.length ? 'block' : 'none';
+  } catch(err) { 
+    console.error(err); 
+    showToast("Failed to fetch groups", false); 
+  }
+}
+
+groupForm.addEventListener("submit", async (e) => {
+  e.preventDefault();
+  const group = {
+    groupName: document.getElementById("groupName").value,
+    selectedProject: projectSelect.value,
+    customTitle: document.getElementById("customTitle").value,
+    customFeatures: document.getElementById("customFeatures").value,
+    customVision: document.getElementById("customVision").value
+  };
+  const payload = { group, members: [] };
+  try {
+    const res = await fetch("/api/groups", {
+      method: "POST",
+      headers: {"Content-Type": "application/json"},
+      body: JSON.stringify(payload)
+    });
+    const data = await res.json();
+    if(res.ok){
+      showToast("Group created successfully!");
+      groupForm.reset();
+      customFields.classList.remove("show");
+      fetchGroups();
+    } else showToast(data.error, false);
+  } catch(err){ console.error(err); showToast("Request failed", false); }
+});
+
+memberForm.addEventListener("submit", async (e) => {
+  e.preventDefault();
+  const groupId = groupSelect.value;
+  const member = {
+    studentName: document.getElementById("studentName").value,
+    email: document.getElementById("email").value,
+    studentID: document.getElementById("studentID").value,
+    mobile: document.getElementById("mobile").value
+  };
+  try {
+    const res = await fetch(`/api/groups/${groupId}/members`, {
+      method: "POST",
+      headers: {"Content-Type": "application/json"},
+      body: JSON.stringify(member)
+    });
+    const data = await res.json();
+    if(res.ok){
+      showToast("Member added successfully!");
+      memberForm.reset();
+      fetchGroups();
+    } else showToast(data.error, false);
+  } catch(err){ console.error(err); showToast("Request failed", false); }
+});
+
+
+
+window.onload = fetchGroups;
+</script>
+</body>
+</html>
