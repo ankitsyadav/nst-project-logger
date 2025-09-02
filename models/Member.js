@@ -5,6 +5,7 @@ const memberSchema = new mongoose.Schema({
   email: { type: String, required: true },
   studentID: { type: String },
   mobile: { type: String },
+  gitHub: { type: String },
   group: { type: mongoose.Schema.Types.ObjectId, ref: "Group" }
 });
 

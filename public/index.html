@@ -174,9 +174,10 @@
     </select>
 
     <input type="text" id="studentName" placeholder="Student Name" required />
-    <input type="email" id="email" placeholder="Email" required />
+    <input type="email" id="email" placeholder="Email (@adypu.edu.in only)" pattern="^[a-zA-Z0-9._%+-]+@adypu\.edu\.in$" required />
     <input type="text" id="studentID" placeholder="Student ID" />
     <input type="text" id="mobile" placeholder="Mobile" />
+    <input type="text" id="gitHub" placeholder="GitHub" />
 
     <button type="submit">➕ Add Member</button>
   </form>
@@ -234,24 +235,6 @@ async function fetchGroups() {
           ${g.members.map(m => `
             <li style="display: flex; align-items: center; gap: 0.5rem;">
               <span>${m.studentName} - ${m.email}</span>
-              <button class="delete-member" 
-                      data-group="${g._id}" 
-                      data-email="${m.email}" 
-                      style="
-                        padding: 0.2rem; 
-                        font-size: 0.8rem; 
-                        color: #fff; 
-                        background: #ef4444; 
-                        border: none; 
-                        border-radius: 0.25rem; 
-                        cursor: pointer;
-                        width: 1.5rem;
-                        height: 1.5rem;
-                        display: flex;
-                        align-items: center;
-                        justify-content: center;
-                      "
-                      title="Delete member">🗑️</button>
             </li>
           `).join("")}
         </ul>
@@ -264,27 +247,7 @@ async function fetchGroups() {
       groupSelect.appendChild(opt);
     });
 
-    // ← Attach delete listeners AFTER DOM is updated
-    document.querySelectorAll(".delete-member").forEach(btn => {
-      btn.addEventListener("click", async () => {
-        const groupId = btn.dataset.group;
-        const email = btn.dataset.email;
-
-        if (!confirm(`Are you sure you want to delete ${email}?`)) return;
-
-        try {
-          const res = await fetch(`/api/groups/${groupId}/members/${email}`, { method: "DELETE" });
-          const data = await res.json();
-          if (res.ok) showToast("Member deleted successfully!");
-          else showToast(data.error, false);
-          fetchGroups(); // Refresh
-        } catch (err) {
-          console.error(err);
-          showToast("Request failed", false);
-        }
-      });
-    });
-
+   
     memberForm.style.display = groups.length ? 'block' : 'none';
   } catch(err) { 
     console.error(err); 

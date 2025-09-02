@@ -104,72 +104,56 @@ app.post("/api/groups", async (req, res) => {
 
 // 🚀 Add member to existing group (prevent duplicate student) also not more than 4 in each group
 app.post("/api/groups/:id/members", async (req, res) => {
-    try {
-        const { id } = req.params;
-
-        const group = await Group.findById(id).populate("members");
-        if (!group) {
-            return res.status(404).json({ error: "Group not found" });
-        }
-
-        // ✅ Check if group already has 4 members
-        if (group.members.length >= 4) {
-            return res.status(400).json({ error: "Group already has maximum 4 members" });
-        }
-
-        const { email, studentID } = req.body;
-
-        if (!email && !studentID) {
-            return res.status(400).json({ error: "Student must have email or studentID" });
-        }
-
-        // ✅ Prevent duplicate student by email OR studentID in this group
-        const duplicate = await Member.findOne({
-            group: id,
-            $or: [{ email }, { studentID }],
-        });
-
-        if (duplicate) {
-            return res.status(400).json({ error: "Student already exists in this group" });
-        }
-
-        const member = new Member({ ...req.body, group: id });
-        await member.save();
-
-        group.members.push(member._id);
-        await group.save();
-
-        res.status(201).json({ success: true, member });
-    } catch (err) {
-        res.status(400).json({ error: "Failed to add member", details: err.message });
-    }
-});
-
-
-// DELETE a member by email
-app.delete("/api/groups/:groupId/members/:email", async (req, res) => {
   try {
-    const { groupId, email } = req.params;
+    const { id } = req.params;
+    const group = await Group.findById(id).populate("members");
+    if (!group) {
+      return res.status(404).json({ error: "Group not found" });
+    }
 
-    // Find the member by group and email
-    const member = await Member.findOne({ group: groupId, email });
-    if (!member) return res.status(404).json({ error: "Member not found" });
+    // ✅ Check if group already has 4 members
+    if (group.members.length >= 4) {
+      return res.status(400).json({ error: "Group already has maximum 4 members" });
+    }
 
-    // Remove member reference from group
-    await Group.findByIdAndUpdate(groupId, { $pull: { members: member._id } });
+    const { studentName, email, studentID, mobile, gitHub } = req.body;
 
-    // Delete member document
-    await Member.findByIdAndDelete(member._id);
+    // Validate required fields
+    if (!studentName) {
+      return res.status(400).json({ error: "Student name is required" });
+    }
+    if (!email || !/^[a-zA-Z0-9._%+-]+@adypu\.edu\.in$/.test(email)) {
+      return res.status(400).json({ error: "Valid @adypu.edu.in email is required" });
+    }
 
-    res.json({ success: true, message: "Member deleted successfully" });
+    // ✅ Prevent duplicate student by email OR studentID in this group
+    const duplicate = await Member.findOne({
+      group: id,
+      $or: [{ email }, { studentID }],
+    });
+
+    if (duplicate) {
+      return res.status(400).json({ error: "Student already exists in this group" });
+    }
+
+    const member = new Member({
+      studentName,
+      email,
+      studentID,
+      mobile,
+      gitHub,
+      group: id,
+    });
+    await member.save();
+
+    group.members.push(member._id);
+    await group.save();
+
+    res.status(201).json({ success: true, member });
   } catch (err) {
-    console.error(err);
-    res.status(500).json({ error: "Server error" });
+    res.status(400).json({ error: "Failed to add member", details: err.message });
   }
 });
-
-
-
 
 
 // 🚀 Start server after DB connection
