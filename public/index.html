@@ -288,7 +288,8 @@ memberForm.addEventListener("submit", async (e) => {
     studentName: document.getElementById("studentName").value,
     email: document.getElementById("email").value,
     studentID: document.getElementById("studentID").value,
-    mobile: document.getElementById("mobile").value
+    mobile: document.getElementById("mobile").value,
+    gitHub: document.getElementById("gitHub").value
   };
   try {
     const res = await fetch(`/api/groups/${groupId}/members`, {
